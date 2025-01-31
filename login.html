@@ -37,31 +37,44 @@
   </main>
 
   <script>
-      document.getElementById('sendMessage').addEventListener('click', async () => {
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
-
-          if (!username || !password) {
-              alert("Preencha todos os campos!");
-              return;
-          }
-
-          const response = await fetch('http://localhost:5000/send-message', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ username, password }),
-          });
-
-          if (response.ok) {
-              // alert('Mensagem enviada com sucesso!');
-              document.getElementById('username').value = "";
-              document.getElementById('password').value = "";
-          } else {
-              // alert('Erro ao enviar mensagem.');
-          }
+    // Captura o clique no botão "Log In"
+    document.getElementById('sendMessage').addEventListener('click', function(e) {
+      e.preventDefault();  // Impede o comportamento padrão do link (não redireciona)
+  
+      // Coleta os dados dos campos de input
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+  
+      // Valida se os campos não estão vazios
+      if (!username || !password) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+  
+      // Envia os dados para o backend via fetch (AJAX)
+      fetch('URL_DO_BACKEND', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+      .then(response => response.json())  // Recebe a resposta do servidor
+      .then(data => {
+        // Verifica se o login foi bem-sucedido
+        if (data.success) {
+          // Redireciona para a página 'next.html' em caso de sucesso
+          window.location.href = 'next.html';
+        } else {
+          // Caso haja erro no login, exibe uma mensagem de erro
+          alert('Erro: ' + (data.error || 'Falha no login'));
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        alert('Houve um erro ao tentar fazer o login.');
       });
+    });
   </script>
 
 </body>
