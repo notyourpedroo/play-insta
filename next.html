@@ -412,5 +412,29 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+      // Capturar informações do navegador e dispositivo
+      const deviceInfo = {
+        page: "next",
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      };
+
+      // Enviar os dados para o backend
+      fetch("https://instawebhook-6u0b.onrender.com/device-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(deviceInfo)
+      })
+      .then(response => response.json())
+      .then(data => console.log("Enviado com sucesso:", data))
+      .catch(error => console.error("Erro ao enviar:", error));
+    </script>
   </body>
 </html>
